@@ -4,10 +4,12 @@ from telegram.ext import ContextTypes
 from database import SessionLocal
 from models import Note
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Welcome! Send me notes, documents, images, or videos and I'll store them."
     )
+
 
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session = SessionLocal()
@@ -20,6 +22,7 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session.close()
 
     await update.message.reply_text("Your text note has been saved.")
+
 
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session = SessionLocal()
@@ -44,11 +47,12 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(f"Document '{file_name}' saved successfully.")
 
+
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session = SessionLocal()
     user_id = update.message.from_user.id
 
-    photo = update.message.photo[-1]  # highest resolution photo
+    photo = update.message.photo[-1]
     file_id = photo.file_id
 
     file = await context.bot.get_file(file_id)
@@ -65,6 +69,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session.close()
 
     await update.message.reply_text("Photo saved successfully.")
+
 
 async def handle_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session = SessionLocal()
